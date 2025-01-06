@@ -35,16 +35,7 @@ export default function CompanyTable() {
         </thead>
         <tbody>
           {data?.map((company) => (
-                        <CompanyRow
-                        key={company.id}
-                        id={company.id}
-                        category={company.categoryTitle}
-                        company={company.title}
-                        status={company.status}
-                        promotion={company.hasPromotions}
-                        country={company.countryTitle}
-                        joinedDate={company.joinedDate}
-                      />
+            <CompanyRow key={company.id} company={company} />
           ))}
         </tbody>
       </table>

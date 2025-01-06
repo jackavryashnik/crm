@@ -1,9 +1,9 @@
 import React from 'react';
 import { getSummarySales } from '@/lib/api';
-import SummaryTableHeader from '@/app/components/SummaryTableHeader';
 import SummaryTable from '@/app/components/SummaryTable';
-import DashboardCard from '@/app/components/DashboardCard';
+import SummaryTableHeader from '@/app/components/SummaryTableHeader';
 import SummaryTableCell from '@/app/components/SummaryTableCell';
+import DashboardCard from '@/app/components/DashboardCard';
 
 export default async function Page() {
   const data = await getSummarySales();
