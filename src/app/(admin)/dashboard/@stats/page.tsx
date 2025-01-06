@@ -1,28 +1,36 @@
 import React from 'react';
-import { getSummaryStats } from '@/lib/api';
-import StatCard, { StatCardType } from '@/app/components/StatCard';
-
-const labelByStat = {
-  promotions: 'Total promotions',
-  categories: 'Total categories',
-  newCompanies: 'New companies',
-  activeCompanies: 'Total active companies',
-};
+import { getSummarySales } from '@/lib/api';
+import DashboardCard from '@/app/components/DashboardCard';
+import SummaryTable from '@/app/components/SummaryTable';
+import SummaryTableHeader from '@/app/components/SummaryTableHeader';
+import SummaryTableCell from '@/app/components/SummaryTableCell';
 
 export default async function Page() {
-  const data = await getSummaryStats();
+  const data = await getSummarySales({
+    next: {
+      revalidate: 5,
+    },
+  });
 
   return (
-    <div className="grid grid-cols-12 gap-5">
-      {(Object.keys(labelByStat) as (keyof typeof data)[]).map((key) => (
-        <div key={key} className="col-span-3">
-          <StatCard
-            type={StatCardType.Gradient}
-            label={labelByStat[key]}
-            counter={data[key]}
-          />
-        </div>
-      ))}
-    </div>
+    <DashboardCard label="Sales details">
+      <SummaryTable
+        headers={
+          <>
+            <SummaryTableHeader>Company</SummaryTableHeader>
+            <SummaryTableHeader align="center">Sold</SummaryTableHeader>
+            <SummaryTableHeader align="center">Income</SummaryTableHeader>
+          </>
+        }
+      >
+        {data.map(({ companyId, companyTitle, sold, income }) => (
+          <tr key={companyId}>
+            <SummaryTableCell>{companyTitle}</SummaryTableCell>
+            <SummaryTableCell align="center">{sold}</SummaryTableCell>
+            <SummaryTableCell align="center">{`$${income}`}</SummaryTableCell>
+          </tr>
+        ))}
+      </SummaryTable>
+    </DashboardCard>
   );
 }
